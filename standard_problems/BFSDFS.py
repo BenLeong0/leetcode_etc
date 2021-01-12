@@ -22,7 +22,8 @@ def BFS(G,s):
         postvisit(v)
 
 
-def DFS(G,s):
+# No risk of stack overflow/exceeding recursion depth (if limited space)
+def DFS_Iterative(G,s):
     stack = [s]
     visited = {s}
     while stack:
@@ -35,7 +36,8 @@ def DFS(G,s):
         postvisit(v)
 
 
-def DFSprepost(G,s):
+# Probably simpler, but may cause stack overflow if input too big (>10000)
+def DFS_Recursive(G,s):
     visited = set()
     def DFSExplore(v,G=G):
         visited.add(v)
@@ -45,3 +47,16 @@ def DFSprepost(G,s):
                 DFSExplore(w)
         postvisit(v)
     DFSExplore(s)
+
+
+def topologicalSort(G,u):
+    visited = set()
+    tsort = []
+    def DFS(v):
+        visited.add(v)
+        for (v,w) in E(G):          # The condition for the ranking!!
+            if w not in visited:
+                DFS(w)
+        tsort.append(v)
+    DFS(u)
+    return tsort
