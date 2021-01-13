@@ -51,4 +51,7 @@ print(sizeOfLargestComponent(board))
 
 """
 DFS runs in O(|V|+|E|) = O(|V|+2|V|) = O(3|V|) = O(|V|) = O(m*n)
+Checks |V|/2 vertices => runs in O(|V|^2)
+
+Space complexity O(|V|) for visited hashtable, +colours+sizes etc (constant space)
 """

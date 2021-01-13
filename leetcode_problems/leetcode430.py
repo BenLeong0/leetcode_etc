@@ -13,7 +13,7 @@ class Node:
             arr.append(curr.val)
         return str(arr)
 
-def flatten(head):
+def flatten_recursive(head):
     def childList(node):
         curr = Node(next=node)
         nextNode = curr.next
@@ -35,3 +35,23 @@ def flatten(head):
 
     childList(head)
     return head
+
+
+def flatten_dfs(head):
+    if not head:
+        return head
+    stack = [head]
+    dummyHead = Node()
+    curr = dummyHead
+    while stack:
+        node = stack.pop()
+        if node.next:
+            stack.append(node.next)
+        if node.child:
+            stack.append(node.child)
+        curr.next, node.prev = node, curr
+        node.child = None
+        curr=node
+    curr.next=None
+    dummyHead.next.prev=None
+    return dummyHead.next

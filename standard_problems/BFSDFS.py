@@ -33,10 +33,10 @@ def DFS_Iterative(G,s):
             if w not in visited:
                 visited.add(w)
                 queue.append(w)
-        postvisit(v)
 
 
 # Probably simpler, but may cause stack overflow if input too big (>10000)
+# postvisit!!
 def DFS_Recursive(G,s):
     visited = set()
     def DFSExplore(v,G=G):
