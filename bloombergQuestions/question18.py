@@ -25,4 +25,18 @@ def removeRanges_sort():
         output.append(el)
     return output
 
+
+def removeRanges_markers():
+    checks = [0] * max(ranges,key=lambda x:x[1])+1
+    for start, end in ranges:
+        checks[start] = 1
+        if checks[end] == 0:
+            checks[end] = -1
+
+
+    output = []
+
+
+
+
 print(removeRanges_sort())
