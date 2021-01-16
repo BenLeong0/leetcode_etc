@@ -1,3 +1,5 @@
+from collections import deque
+
 # Linked lists
 class ListNode:
     def __init__(self, val=0, next=None):
@@ -134,3 +136,79 @@ class MaxHeap:
         del self.heap[-1]
         self.downHeap(0)
         return result
+
+
+# Binary search tree
+class BSTNode:
+    def __init__(self,val=0,left=None,right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class BinaryTree:
+    def __init__(self):
+        self.root = None
+
+    def __repr__(self):
+        if not self.root:
+            return []
+        result = [self.root.val]
+        queue = deque([self.root])
+        while queue:
+            layer_size = len(queue)
+            for _ in range(layer_size):
+                node = queue.popleft()
+                if node.left:
+                    queue.append(node.left)
+                    result.append(node.left.val)
+                else:
+                    result.append(None)
+
+                if node.right:
+                    queue.append(node.right)
+                    result.append(node.right.val)
+                else:
+                    result.append(None)
+        return str(result)
+
+
+    def insert(self,val,parent=None):
+        if not parent:
+            parent = self.root
+
+        if not parent:
+            self.root = BSTNode(val)
+            return
+        elif val<parent.val:
+            if parent.left:
+                self.insert(val,parent.left)
+            else:
+                parent.left = BSTNode(val)
+        else:
+            if parent.right:
+                self.insert(val,parent.right)
+            else:
+                parent.right = BSTNode(val)
+
+    def search(self,val,node=None):
+        if not node:
+            node = self.root
+
+        if not node:
+            return None
+        elif val==node.val:
+            return node
+        elif val<node.val:
+            if node.left:
+                return self.search(val,node.left)
+            else:
+                return None
+        else:
+            if node.right:
+                return self.search(val,node.right)
+            else:
+                return None
+
+class SplayTree(BinaryTree):
+    def find(self,val,node=None,p=None,g=None,gg=None):
+        pass
