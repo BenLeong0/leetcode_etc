@@ -40,6 +40,8 @@ class MinHeap:
     def __init__(self,key=lambda x:x):
         self.heap = []
         self.key = key
+        # Maybe store size
+        # Maybe start with dummy node
 
     def __repr__(self):
         return str(self.heap)
@@ -210,5 +212,37 @@ class BinaryTree:
                 return None
 
 class SplayTree(BinaryTree):
-    def find(self,val,node=None,p=None,g=None,gg=None):
-        pass
+    def leftRotate(self, node):
+        newRoot = node.right
+        newRoot.left, node.right = node, newRoot.left
+
+    def rightRotate(self, node):
+        newRoot = node.left
+        newRoot.right, node.left = node, newRoot.right
+
+    def find(self,val,p=None,g=None,gg=None):
+        node = self.root
+        while node.val != val:
+            gg, g, p = g, p, node
+            if node.val > val:
+                if not node.left:
+                    return None
+                node = node.left
+            elif node.val < val:
+                if not node.right:
+                    return None
+                node = node.right
+
+        if not p:           # is root
+            return node
+        if not g:           # is child of root
+
+
+
+
+s = SplayTree()
+s.insert(5)
+s.insert(4)
+s.insert(8)
+s.insert(9)
+print(s.find(9))
