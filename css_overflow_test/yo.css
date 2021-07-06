@@ -1,0 +1,50 @@
+.gold {
+    background-color: gold;
+}
+
+.skyblue {
+    background-color: skyblue;
+}
+
+.page-container {
+    margin: 50px auto;
+    height: 800px;
+    width: 1000px;
+    background-color: black;
+    position: relative;
+}
+
+.container {
+    height: 200px;
+    width: 1000px;
+    overflow: hidden;
+    position: relative;
+}
+
+.overlap {
+    width: 80px;
+    height: 800px;
+    position: absolute;
+}
+
+.overlap1 {
+    background-color: crimson;
+}
+
+.overlap2 {
+    background-color: darkblue;
+    left: 200px;
+    top: -200px;
+}
+
+.overlap3 {
+    background-color: crimson;
+    left: 400px;
+    top: -400px;
+}
+
+.overlap4 {
+    background-color: darkblue;
+    left: 600px;
+    top: -600px;
+}
