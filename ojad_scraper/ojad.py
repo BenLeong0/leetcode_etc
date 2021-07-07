@@ -3,6 +3,8 @@ from bs4.element import ResultSet
 import requests
 from bs4 import BeautifulSoup
 
+# Multithreading:
+# https://stackoverflow.com/questions/11968689/python-multithreading-wait-till-all-threads-finished
 
 words = [
     '食べ物',
