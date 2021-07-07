@@ -64,7 +64,7 @@ class OJAD:
 
     def extract_yomikata(self, section: BeautifulSoup) -> "list[str]":
         jisho_section: BeautifulSoup = section.find('td', class_='katsuyo_jisho_js')
-        accent_patterns: list[BeautifulSoup] = jisho_section.findAll('span', class_='accented_word')
+        accent_patterns: list[BeautifulSoup] = jisho_section.find_all('span', class_='accented_word')
 
         accents = []
         for accent in accent_patterns:
