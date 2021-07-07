@@ -18,6 +18,7 @@ words = [
 
 
 class OJAD:
+
     accent_dict = {}
     sections: ResultSet
 
