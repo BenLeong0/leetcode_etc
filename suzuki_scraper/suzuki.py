@@ -5,7 +5,7 @@ import requests
 
 class Suzuki:
 
-    accent_dict = {}
+    accent_dict: "dict[str, list[str]]" = {}
     up_to_ha_regex = '.*?(?=は)'
 
     url = 'http://www.gavo.t.u-tokyo.ac.jp/ojad/phrasing/index'
@@ -34,14 +34,14 @@ class Suzuki:
         return accent_pairs
 
 
-    def get_html_sections(self):
+    def get_html_sections(self) -> None:
         r = requests.post(self.url, self.formdata).text
         soup = BeautifulSoup(r, 'html.parser')
         all_sections = soup.find_all('div', class_='phrasing_row_wrapper')
-        self.sections: list[BeautifulSoup] = filter(lambda sect: 'は' in sect.text, all_sections)
+        self.sections: list[BeautifulSoup] = [sect for sect in all_sections if 'は' in sect.text]
 
 
-    def populate_accent_dict(self):
+    def populate_accent_dict(self) -> None:
         for section in self.sections:
             writing = self.extract_kakikata(section)
             reading = self.extract_yomikata(section)
@@ -73,8 +73,8 @@ class Suzuki:
         return accent_pattern
 
 
-    def construct_yomikata(self, chars, accent_pattern):
-        accented_word = ''
+    def construct_yomikata(self, chars: str, accent_pattern: "list[int]") -> str:
+        accented_word: str = ''
         H = accent_pattern[0]
         for (i, height) in enumerate(accent_pattern[1:]):
             accented_word += chars[i]
