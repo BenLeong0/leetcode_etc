@@ -1,14 +1,15 @@
 from bs4 import BeautifulSoup
+import re
 import requests
 
 
-def get_accents(words):
-    words_with_particles = [word + 'は' for word in words]
+class Suzuki:
+
+    accent_dict = {}
+    up_to_ha_regex = '.*?(?=は)'
 
     url = 'http://www.gavo.t.u-tokyo.ac.jp/ojad/phrasing/index'
-
     formdata = {
-        "data[Phrasing][text]": "\n".join(words_with_particles),
         "data[Phrasing][curve]": "advanced",
         "data[Phrasing][accent]": "advanced",
         "data[Phrasing][accent_mark]": "all",
@@ -20,48 +21,85 @@ def get_accents(words):
         "data[Phrasing][jeita]": "invisible",
     }
 
-    r = requests.post(url, formdata).text
-    soup = BeautifulSoup(r, 'html.parser')
-
-    mora_sections = soup.findAll('div', class_='phrasing_text')
-    morae = [[char[0] for char in str(word).split('<span class="char">')[1:]][:-2] for word in mora_sections]
-
-    resp = [x.split('\n')[0].split(';')[0] for x in r.split('set_accent_curve_phrase')[1:]]
-    accent_patterns = [eval(args)[2] for args in resp]
-
-    return list(zip(words, morae, accent_patterns))
+    def __init__(self, words: "list[str]"):
+        self.words = words
+        words_with_particles = [word + 'は' for word in words]
+        self.formdata["data[Phrasing][text]"] = "\n".join(words_with_particles)
+        self.get_html_sections()
+        self.populate_accent_dict()
 
 
-def apply_accent_pattern(word, morae, pattern):
-    accented_word = ''
-    H = pattern[0]
-    for (i, height) in enumerate(pattern[1:]):
-        if H == 0 and height == 1 and i != 0:
-            accented_word += f"{morae[i]}* "
-        elif H == 1 and height == 0:
-            accented_word += f"{morae[i]}' "
-        else:
-            accented_word += morae[i]
-        H = height
-    return f"<div class=\"word-container\"><div class=\"word\">{word}:</div> <div class=\"reading\">{accented_word}</div></div>"
+    def get_accents(self) -> "list[tuple[str, list[str]]]":
+        accent_pairs = [(word, self.accent_dict[word]) for word in self.words]
+        return accent_pairs
+
+
+    def get_html_sections(self):
+        r = requests.post(self.url, self.formdata).text
+        soup = BeautifulSoup(r, 'html.parser')
+        all_sections = soup.find_all('div', class_='phrasing_row_wrapper')
+        self.sections: list[BeautifulSoup] = filter(lambda sect: 'は' in sect.text, all_sections)
+
+
+    def populate_accent_dict(self):
+        for section in self.sections:
+            writing = self.extract_kakikata(section)
+            reading = self.extract_yomikata(section)
+            self.accent_dict[writing] = reading
+
+
+    def extract_kakikata(self, section: BeautifulSoup) -> str:
+        kakikata_div: BeautifulSoup = section.find('div', class_='phrasing_subscript')
+        word_up_to_ha = re.search(self.up_to_ha_regex, kakikata_div.text).group()
+        return word_up_to_ha
+
+
+    def extract_yomikata(self, section: BeautifulSoup) -> str:
+        chars = self.extract_chars(section)
+        accent_pattern = self.extract_accent_pattern(section)
+        return self.construct_yomikata(chars, accent_pattern)
+
+
+    def extract_chars(self, section: BeautifulSoup) -> str:
+        chars_div: BeautifulSoup = section.find('div', class_='phrasing_text')
+        chars_up_to_ha = re.search(self.up_to_ha_regex, chars_div.text).group()
+        return chars_up_to_ha
+
+
+    def extract_accent_pattern(self, section: BeautifulSoup) -> "list[int]":
+        get_array_regex = '\[.*?\]'
+        function_div = str(section.find('script'))
+        accent_pattern = eval(re.search(get_array_regex, function_div).group())
+        return accent_pattern
+
+
+    def construct_yomikata(self, chars, accent_pattern):
+        accented_word = ''
+        H = accent_pattern[0]
+        for (i, height) in enumerate(accent_pattern[1:]):
+            accented_word += chars[i]
+            if H == 0 and height == 1 and i != 0:
+                accented_word += "* "
+            elif H == 1 and height == 0:
+                accented_word += "' "
+            H = height
+        return accented_word
 
 
 words = [
     "行きます",
     "読みます",
     "尻尾",
-    "時間",
+    "時間"
 ]
 
 
-def print_all_accents(words):
-    data = get_accents(words)
-    with open("suzuki_scraper/suzuki.html", "w", encoding="utf8") as f:
-        f.write('<link rel="stylesheet" href="suzuki.css">')
-        f.write('<div class="page-container">')
-        for word in data:
-            f.write(apply_accent_pattern(*word))
-        f.write("</div>")
+print(Suzuki(words).get_accents())
 
 
-print_all_accents(words)
+# with open("suzuki_scraper/suzuki.html", "w", encoding="utf8") as f:
+#     f.write('<link rel="stylesheet" href="suzuki.css">')
+#     f.write('<div class="page-container">')
+#     for word in data:
+#         f.write(f"<div class=\"word-container\"><div class=\"word\">{word}:</div> <div class=\"reading\">{accented_word}</div></div>")
+#     f.write("</div>")
