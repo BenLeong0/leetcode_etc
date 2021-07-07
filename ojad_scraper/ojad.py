@@ -21,13 +21,12 @@ words = [
 
 class OJAD:
 
-    accent_dict = {}
+    accent_dict: "dict[str, list[str]]" = {}
     sections: ResultSet
 
     def __init__(self, words: "list[str]"):
         self.words = words
         self.get_html_sections()
-
         self.populate_accent_dict()
 
 
@@ -58,7 +57,7 @@ class OJAD:
 
 
     def extract_kakikata(self, section: BeautifulSoup) -> "list[str]":
-        midashi = section.findNext('p', class_='midashi_word').text
+        midashi: str = section.findNext('p', class_='midashi_word').text
         writings = midashi.split('・')
         filtered = [re.search('[^\[]*', writing).group() for writing in writings]
         return filtered
@@ -68,11 +67,11 @@ class OJAD:
         jisho_section: BeautifulSoup = section.find('td', class_='katsuyo_jisho_js')
         accent_patterns: list[BeautifulSoup] = jisho_section.find_all('span', class_='accented_word')
 
-        accents = []
+        accents: list[str] = []
         for accent in accent_patterns:
-            contents = accent.contents
-            chars = [span.text for span in contents]
-            classes = [span['class'] for span in contents]
+            contents: BeautifulSoup = accent.contents
+            chars: list[str] = [span.text for span in contents]
+            classes: list[list[str]] = [span['class'] for span in contents]
 
             curr = ''
             for (char, class_list) in zip(chars, classes):
