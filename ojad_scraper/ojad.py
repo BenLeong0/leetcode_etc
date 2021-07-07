@@ -14,7 +14,7 @@ words = [
 midashi_word = '<p class="midashi_word">.*?</p>'
 
 
-def get_html_sections(words):
+def get_html_sections(words: "list[str]") -> BeautifulSoup:
     query_param = '%20'.join(words)
     url = f"http://www.gavo.t.u-tokyo.ac.jp/ojad/search/index/word:{query_param}"
 
@@ -25,24 +25,25 @@ def get_html_sections(words):
     return sections
 
 
-def get_writings(section):
-    # soup = BeautifulSoup(section, 'html.parser')
+def get_writings(section: BeautifulSoup) -> None:
     midashi = section.findNext('p', class_='midashi_word').text
     writings = midashi.split('・')
     filtered = [re.search('[^\[]*', writing).group() for writing in writings]
     print(filtered)
 
 
-def get_accents(section):
+def get_accents(section: BeautifulSoup) -> None:
     data = section.find('td', class_='katsuyo_jisho_js').find('span', class_='accented_word')
-    if data:
-        contents = data.contents
-        classes = [span['class'] for span in contents]
-        chars = [span.text for span in contents]
-        print(chars)
-        print(classes)
-    else:
+
+    if not data:
         print('no results!')
+        return
+
+    contents = data.contents
+    classes = [span['class'] for span in contents]
+    chars = [span.text for span in contents]
+    print(chars)
+    print(classes)
 
 
 
