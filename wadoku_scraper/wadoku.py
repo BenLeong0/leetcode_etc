@@ -62,12 +62,11 @@ class Wadoku:
         sections: list[BeautifulSoup] = []
         for row in table_rows:
             if not row.has_attr('class'):
-                if curr:
-                    sections.append(BeautifulSoup(curr, 'html.parser'))
-                curr = str(row)
+                sections.append(str(row))
             else:
-                curr += str(row)
-        return sections
+                sections[-1] += str(row)
+
+        return [BeautifulSoup(section, 'html.parser') for section in sections]
 
 
 
@@ -109,7 +108,6 @@ class Wadoku:
 
             accents.append(curr)
 
-        print(accents)
         return accents
 
 
