@@ -80,11 +80,13 @@ class Suzuki:
 
 
     def construct_yomikata(self, chars: str, accent_pattern: "list[int]") -> str:
+        # accent_pattern includes accents for mini_chars
+        mini_chars = 'ゃょゅぁぃぅぇぉ'
         accented_word: str = ''
         H = accent_pattern[0]
         for (i, height) in enumerate(accent_pattern[1:]):
             accented_word += chars[i]
-            if H == 0 and height == 1 and i != 0:
+            if H == 0 and height == 1 and i != 0 and (i != 1 or chars[i] not in mini_chars):
                 accented_word += "* "
             elif H == 1 and height == 0:
                 accented_word += "' "
