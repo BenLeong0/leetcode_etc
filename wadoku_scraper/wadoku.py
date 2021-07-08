@@ -78,7 +78,7 @@ class Wadoku:
     def extract_yomikata(self, section: BeautifulSoup) -> "list[str]":
         accent_sections: list[BeautifulSoup] = section.find_all('span', class_='accent')
 
-        accents: list[str] = []
+        accents: set[str] = set()
         for accent in accent_sections:
             spans: list[BeautifulSoup] = list(accent.children)
 
@@ -106,9 +106,9 @@ class Wadoku:
             if 'r' in spans[-1]['class'] and H == 1:
                 curr += "'"
 
-            accents.append(curr)
+            accents.add(curr)
 
-        return accents
+        return list(accents)
 
 
     def remove_punct(self, s: str) -> str:
