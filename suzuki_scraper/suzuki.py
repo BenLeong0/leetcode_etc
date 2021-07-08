@@ -8,7 +8,6 @@ from bs4 import BeautifulSoup
 class Suzuki:
 
     accent_dict: "dict[str, list[str]]" = defaultdict(list)
-    up_to_ha_regex = '.*?(?=は)'
 
     url = 'http://www.gavo.t.u-tokyo.ac.jp/ojad/phrasing/index'
     formdata = {
@@ -57,7 +56,7 @@ class Suzuki:
 
     def extract_kakikata(self, section: BeautifulSoup) -> str:
         kakikata_div: BeautifulSoup = section.find('div', class_='phrasing_subscript')
-        word_up_to_ha = re.search(self.up_to_ha_regex, kakikata_div.text).group()
+        word_up_to_ha = re.sub('\s', '', kakikata_div.text)[:-1]
         return word_up_to_ha
 
 
@@ -69,7 +68,7 @@ class Suzuki:
 
     def extract_chars(self, section: BeautifulSoup) -> str:
         chars_div: BeautifulSoup = section.find('div', class_='phrasing_text')
-        chars_up_to_ha = re.search(self.up_to_ha_regex, chars_div.text).group()
+        chars_up_to_ha = re.sub('\s', '', chars_div.text)[:-1]
         return chars_up_to_ha
 
 
