@@ -1,6 +1,7 @@
 import re
 import requests
 from collections import defaultdict
+from multiprocessing.pool import ThreadPool as Pool
 
 from bs4 import BeautifulSoup
 from bs4.element import ResultSet
@@ -43,13 +44,18 @@ class OJAD:
 
 
     def get_html_sections(self) -> BeautifulSoup:
+        pool = Pool(len(self.words))
         for word in self.words:
-            # url = self.get_url(word)
-            url = f"http://www.gavo.t.u-tokyo.ac.jp/ojad/search/index/word:{word}"
-            html = requests.post(url).text
-            soup = BeautifulSoup(html, 'html.parser')
+            pool.apply_async(self.get_html_section, (word,))
+        pool.close()
+        pool.join()
 
-            self.sections += soup.findAll('tr', id=lambda x: x and x.startswith('word_'))
+
+    def get_html_section(self, word: str) -> None:
+        url = f"http://www.gavo.t.u-tokyo.ac.jp/ojad/search/index/word:{word}"
+        html = requests.post(url).text
+        soup = BeautifulSoup(html, 'html.parser')
+        self.sections += soup.findAll('tr', id=lambda x: x and x.startswith('word_'))
 
 
     def extract_kakikata(self, section: BeautifulSoup) -> "list[str]":
