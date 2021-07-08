@@ -7,12 +7,12 @@ from bs4 import BeautifulSoup
 # https://stackoverflow.com/questions/11968689/python-multithreading-wait-till-all-threads-finished
 
 words = [
+    '眼鏡',
     '食べ物',
     '行く',
     '罵る',
     '綺麗',
     '面白い',
-    '眼鏡',
     '気',
     '木',
     '尻尾',
@@ -78,23 +78,45 @@ class Wadoku:
 
 
     def extract_yomikata(self, section: BeautifulSoup) -> "list[str]":
-        jisho_section: BeautifulSoup = section.find('td', class_='katsuyo_jisho_js')
-        accent_patterns: list[BeautifulSoup] = jisho_section.find_all('span', class_='accented_word')
+        accent_sections: list[BeautifulSoup] = section.find_all('span', class_='accent')
+        # print(accent_sections)
 
-        accents = []
-        for accent in accent_patterns:
-            contents = accent.contents
-            chars = [span.text for span in contents]
-            classes = [span['class'] for span in contents]
+        accents: list[str] = []
+        for accent in accent_sections:
+            spans: list[BeautifulSoup] = list(accent.children)
 
-            curr = ''
-            for (char, class_list) in zip(chars, classes):
-                curr += char
-                if 'accent_top' in class_list:
+            # Initialise with first char
+            curr = self.remove_punct(spans[0].text)
+            if 't' in spans[0]['class']:
+                if 'r' in spans[0]:
                     curr += "' "
+                    H = 0
+                H = 1
+            else: H = 0
+
+            # Iterate over alternating heights
+            for (i, span) in enumerate(spans[1:], start=1):
+                if 't' in span['class'] and H == 0:
+                    if i != 1: curr += "* "
+                    H = 1
+                elif 'b' in span['class'] and H == 1:
+                    curr += "' "
+                    H = 0
+
+                curr += self.remove_punct(span.text)
+
+            # Final drop if 尾高
+            if 'r' in spans[-1]['class'] and H == 1:
+                curr += "'"
+
             accents.append(curr)
 
+        print(accents)
         return accents
+
+
+    def remove_punct(self, s: str) -> str:
+        return re.sub('[\￨･~]', '', s)
 
 
 
