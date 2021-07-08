@@ -56,6 +56,7 @@ class Wadoku:
         soup = BeautifulSoup(html, 'html.parser')
         self.sections = self.extract_sections(soup)
 
+
     def extract_sections(self, soup: BeautifulSoup) -> "list[BeautifulSoup]":
         table_rows: ResultSet = soup.findAll('tr')
         curr: str = None
@@ -72,10 +73,8 @@ class Wadoku:
 
 
     def extract_kakikata(self, section: BeautifulSoup) -> "list[str]":
-        midashi = section.findNext('p', class_='midashi_word').text
-        writings = midashi.split('・')
-        filtered = [re.search('[^\[]*', writing).group() for writing in writings]
-        return filtered
+        midashi = section.find('th', class_='focalPhrase').text
+        return midashi
 
 
     def extract_yomikata(self, section: BeautifulSoup) -> "list[str]":
