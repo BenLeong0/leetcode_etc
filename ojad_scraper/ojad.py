@@ -36,13 +36,6 @@ class OJAD:
             self.accent_dict[key] += value
 
 
-    def get_url(self) -> str:
-        # This can only get 20 results (goes up to 100, still not enough!)
-        # TODO: Individual searches for each word? (multithread)
-        query_param = '%20'.join(self.words)
-        return f"http://www.gavo.t.u-tokyo.ac.jp/ojad/search/index/word:{query_param}"
-
-
     def get_html_sections(self) -> BeautifulSoup:
         pool = Pool(len(self.words))
         for word in self.words:
