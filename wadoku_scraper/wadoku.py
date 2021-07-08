@@ -39,10 +39,9 @@ class Wadoku:
 
     def populate_accent_dict(self) -> None:
         for section in self.sections:
-            writings = self.extract_kakikata(section)
+            writing = self.extract_kakikata(section)
             accents = self.extract_yomikata(section)
-            for writing in writings:
-                self.accent_dict[writing] = accents
+            self.accent_dict[writing] = accents
 
 
     def get_url(self) -> str:
@@ -72,14 +71,13 @@ class Wadoku:
 
 
 
-    def extract_kakikata(self, section: BeautifulSoup) -> "list[str]":
-        midashi = section.find('th', class_='focalPhrase').text
-        return midashi
+    def extract_kakikata(self, section: BeautifulSoup) -> str:
+        midashi: str = section.find('th', class_='focalPhrase').text
+        return midashi.strip()
 
 
     def extract_yomikata(self, section: BeautifulSoup) -> "list[str]":
         accent_sections: list[BeautifulSoup] = section.find_all('span', class_='accent')
-        # print(accent_sections)
 
         accents: list[str] = []
         for accent in accent_sections:
