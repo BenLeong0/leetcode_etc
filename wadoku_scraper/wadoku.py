@@ -54,12 +54,11 @@ class Wadoku:
         url = self.get_url()
         html = requests.post(url).text
         soup = BeautifulSoup(html, 'html.parser')
-
         self.sections = self.extract_sections(soup)
 
     def extract_sections(self, soup: BeautifulSoup) -> "list[BeautifulSoup]":
-        table_rows = soup.findAll('tr')
-        curr = None
+        table_rows: ResultSet = soup.findAll('tr')
+        curr: str = None
         sections: list[BeautifulSoup] = []
         for row in table_rows:
             if not row.has_attr('class'):
