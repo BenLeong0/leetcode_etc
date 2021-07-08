@@ -55,7 +55,21 @@ class Wadoku:
         html = requests.post(url).text
         soup = BeautifulSoup(html, 'html.parser')
 
-        self.sections = soup.findAll('tr', id=lambda x: x and x.startswith('word_'))
+        self.sections = self.extract_sections(soup)
+
+    def extract_sections(self, soup: BeautifulSoup) -> "list[BeautifulSoup]":
+        table_rows = soup.findAll('tr')
+        curr = None
+        sections: list[BeautifulSoup] = []
+        for row in table_rows:
+            if not row.has_attr('class'):
+                if curr:
+                    sections.append(BeautifulSoup(curr, 'html.parser'))
+                curr = str(row)
+            else:
+                curr += str(row)
+        return sections
+
 
 
     def extract_kakikata(self, section: BeautifulSoup) -> "list[str]":
@@ -88,5 +102,5 @@ class Wadoku:
 
 
 
-sol = OJAD(words).get_accents()
+sol = Wadoku(words).get_accents()
 print(sol)
