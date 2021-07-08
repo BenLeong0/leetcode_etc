@@ -9,7 +9,7 @@ from bs4.element import ResultSet
 class OJAD:
 
     accent_dict: "dict[str, list[str]]" = defaultdict(list)
-    sections: ResultSet
+    sections: "list[BeautifulSoup]" = []
 
     def __init__(self, words: "list[str]"):
         self.words = words
@@ -29,18 +29,27 @@ class OJAD:
             for writing in writings:
                 self.accent_dict[writing] = accents
 
+        # Get する verbs
+        items = [(k[:-2],[x[:-2] for x in v]) for (k,v) in self.accent_dict.items() if k[-2:] == "する"]
+        for (key, value) in items:
+            self.accent_dict[key] += value
+
 
     def get_url(self) -> str:
+        # This can only get 20 results (goes up to 100, still not enough!)
+        # TODO: Individual searches for each word? (multithread)
         query_param = '%20'.join(self.words)
         return f"http://www.gavo.t.u-tokyo.ac.jp/ojad/search/index/word:{query_param}"
 
 
     def get_html_sections(self) -> BeautifulSoup:
-        url = self.get_url()
-        html = requests.post(url).text
-        soup = BeautifulSoup(html, 'html.parser')
+        for word in self.words:
+            # url = self.get_url(word)
+            url = f"http://www.gavo.t.u-tokyo.ac.jp/ojad/search/index/word:{word}"
+            html = requests.post(url).text
+            soup = BeautifulSoup(html, 'html.parser')
 
-        self.sections = soup.findAll('tr', id=lambda x: x and x.startswith('word_'))
+            self.sections += soup.findAll('tr', id=lambda x: x and x.startswith('word_'))
 
 
     def extract_kakikata(self, section: BeautifulSoup) -> "list[str]":
@@ -69,3 +78,9 @@ class OJAD:
             accents.append(curr)
 
         return accents
+
+
+
+words = ['争い', '遣る', '略奪', '爆破', '短波', '制']
+
+print(OJAD(words).get_accents())
