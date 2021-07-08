@@ -90,22 +90,3 @@ class Suzuki:
                 accented_word += "' "
             H = height
         return accented_word
-
-
-words = [
-    "行きます",
-    "読みます",
-    "尻尾",
-    "時間"
-]
-
-
-print(Suzuki(words).get_accents())
-
-
-# with open("suzuki_scraper/suzuki.html", "w", encoding="utf8") as f:
-#     f.write('<link rel="stylesheet" href="suzuki.css">')
-#     f.write('<div class="page-container">')
-#     for word in data:
-#         f.write(f"<div class=\"word-container\"><div class=\"word\">{word}:</div> <div class=\"reading\">{accented_word}</div></div>")
-#     f.write("</div>")

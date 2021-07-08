@@ -4,22 +4,6 @@ import requests
 from bs4 import BeautifulSoup
 from bs4.element import ResultSet
 
-# Multithreading:
-# https://stackoverflow.com/questions/11968689/python-multithreading-wait-till-all-threads-finished
-
-words = [
-    '眼鏡',
-    '食べ物',
-    '行く',
-    '罵る',
-    '綺麗',
-    '面白い',
-    '気',
-    '木',
-    '尻尾',
-    'する'
-]
-
 
 class Wadoku:
 
@@ -114,10 +98,3 @@ class Wadoku:
 
     def remove_punct(self, s: str) -> str:
         return re.sub('[\￨･~]', '', s)
-
-
-
-
-
-sol = Wadoku(words).get_accents()
-print(sol)
