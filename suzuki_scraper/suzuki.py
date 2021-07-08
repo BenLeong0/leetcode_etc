@@ -1,12 +1,13 @@
 import re
 import requests
+from collections import defaultdict
 
 from bs4 import BeautifulSoup
 
 
 class Suzuki:
 
-    accent_dict: "dict[str, list[str]]" = {}
+    accent_dict: "dict[str, list[str]]" = defaultdict(list)
     up_to_ha_regex = '.*?(?=は)'
 
     url = 'http://www.gavo.t.u-tokyo.ac.jp/ojad/phrasing/index'

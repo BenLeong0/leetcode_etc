@@ -1,5 +1,6 @@
 import re
 import requests
+from collections import defaultdict
 
 from bs4 import BeautifulSoup
 from bs4.element import ResultSet
@@ -7,7 +8,7 @@ from bs4.element import ResultSet
 
 class OJAD:
 
-    accent_dict: "dict[str, list[str]]" = {}
+    accent_dict: "dict[str, list[str]]" = defaultdict(list)
     sections: ResultSet
 
     def __init__(self, words: "list[str]"):
