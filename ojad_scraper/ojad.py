@@ -1,22 +1,8 @@
 import re
-from bs4.element import ResultSet
 import requests
+
 from bs4 import BeautifulSoup
-
-# Multithreading:
-# https://stackoverflow.com/questions/11968689/python-multithreading-wait-till-all-threads-finished
-
-words = [
-    '食べ物',
-    '行く',
-    '罵る',
-    '綺麗',
-    '面白い',
-    '眼鏡',
-    '気',
-    '木',
-    '尻尾'
-]
+from bs4.element import ResultSet
 
 
 class OJAD:
@@ -81,10 +67,3 @@ class OJAD:
             accents.append(curr)
 
         return accents
-
-
-
-
-
-sol = OJAD(words).get_accents()
-print(sol)

@@ -1,6 +1,7 @@
-from bs4 import BeautifulSoup
 import re
 import requests
+
+from bs4 import BeautifulSoup
 
 
 class Suzuki:
@@ -23,9 +24,9 @@ class Suzuki:
 
     def __init__(self, words: "list[str]"):
         self.words = words
-        words_with_particles = [word + 'は' for word in words]
-        self.formdata["data[Phrasing][text]"] = "\n".join(words_with_particles)
+        self.update_formdata()
         self.get_html_sections()
+
         self.populate_accent_dict()
 
 
@@ -34,7 +35,12 @@ class Suzuki:
         return accent_pairs
 
 
-    def get_html_sections(self) -> None:
+    def update_formdata(self):
+        words_with_particles = [word + 'は' for word in self.words]
+        self.formdata["data[Phrasing][text]"] = "\n".join(words_with_particles)
+
+
+    def get_html_sections(self):
         r = requests.post(self.url, self.formdata).text
         soup = BeautifulSoup(r, 'html.parser')
         all_sections = soup.find_all('div', class_='phrasing_row_wrapper')
@@ -84,22 +90,3 @@ class Suzuki:
                 accented_word += "' "
             H = height
         return accented_word
-
-
-words = [
-    "行きます",
-    "読みます",
-    "尻尾",
-    "時間"
-]
-
-
-print(Suzuki(words).get_accents())
-
-
-# with open("suzuki_scraper/suzuki.html", "w", encoding="utf8") as f:
-#     f.write('<link rel="stylesheet" href="suzuki.css">')
-#     f.write('<div class="page-container">')
-#     for word in data:
-#         f.write(f"<div class=\"word-container\"><div class=\"word\">{word}:</div> <div class=\"reading\">{accented_word}</div></div>")
-#     f.write("</div>")
