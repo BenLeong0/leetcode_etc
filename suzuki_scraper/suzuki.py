@@ -24,15 +24,20 @@ class Suzuki:
 
     def __init__(self, words: "list[str]"):
         self.words = words
-        words_with_particles = [word + 'は' for word in words]
-        self.formdata["data[Phrasing][text]"] = "\n".join(words_with_particles)
+        self.update_formdata()
         self.get_html_sections()
+
         self.populate_accent_dict()
 
 
     def get_accents(self) -> "list[tuple[str, list[str]]]":
         accent_pairs = [(word, self.accent_dict[word]) for word in self.words]
         return accent_pairs
+
+
+    def update_formdata(self):
+        words_with_particles = [word + 'は' for word in self.words]
+        self.formdata["data[Phrasing][text]"] = "\n".join(words_with_particles)
 
 
     def get_html_sections(self):
