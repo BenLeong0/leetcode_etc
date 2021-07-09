@@ -1,5 +1,6 @@
 import re
 import requests
+from collections import defaultdict
 
 from bs4 import BeautifulSoup
 from bs4.element import ResultSet
@@ -7,7 +8,7 @@ from bs4.element import ResultSet
 
 class Wadoku:
 
-    accent_dict = {}
+    accent_dict = defaultdict(dict)
     sections: ResultSet
 
     def __init__(self, words: "list[str]"):
@@ -56,8 +57,10 @@ class Wadoku:
 
 
     def extract_kakikata(self, section: BeautifulSoup) -> str:
-        midashi: str = section.find('th', class_='focalPhrase').text
-        return midashi.strip()
+        midashi_section: BeautifulSoup = section.find('th', class_='focalPhrase')
+        if midashi_section is None:
+            return ''
+        return midashi_section.text.strip()
 
 
     def extract_yomikata(self, section: BeautifulSoup) -> "list[str]":
@@ -65,7 +68,7 @@ class Wadoku:
 
         accents: set[str] = set()
         for accent in accent_sections:
-            spans: list[BeautifulSoup] = list(accent.children)
+            spans: list[BeautifulSoup] = [span for span in accent.children if span != '…']
 
             # Initialise with first char
             curr = self.remove_punct(spans[0].text)

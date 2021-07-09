@@ -4,7 +4,6 @@ from collections import defaultdict
 from multiprocessing.pool import ThreadPool as Pool
 
 from bs4 import BeautifulSoup
-from bs4.element import ResultSet
 
 
 class OJAD:
