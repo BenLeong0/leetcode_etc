@@ -62,7 +62,7 @@ class OJAD:
         accent_patterns: list[BeautifulSoup] = jisho_section.find_all('span', class_='accented_word')
         # 拗音 get their own span already!
 
-        accents: list[str] = []
+        accents: set[str] = set()
         for accent in accent_patterns:
             contents: BeautifulSoup = accent.contents
             chars: list[str] = [span.text for span in contents]
@@ -75,7 +75,7 @@ class OJAD:
                     curr += "' "
             accents.append(curr)
 
-        return accents
+        return list(accents)
 
 
 
