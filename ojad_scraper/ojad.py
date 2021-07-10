@@ -73,7 +73,7 @@ class OJAD:
                 curr += char
                 if 'accent_top' in class_list:
                     curr += "' "
-            accents.append(curr)
+            accents.add(curr)
 
         return list(accents)
 
