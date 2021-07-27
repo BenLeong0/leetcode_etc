@@ -38,7 +38,7 @@ def get_full_accent_dict(words):
     print(accent_dict)
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     words = [
         '眼鏡',
         '食べ物',
