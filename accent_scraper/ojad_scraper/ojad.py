@@ -78,7 +78,6 @@ class OJAD:
         return list(accents)
 
 
-
-words = ['争い', '遣る', '略奪', '爆破', '短波', '制']
-
-print(OJAD(words).get_accents())
+if __name__ == '__main__':
+    words = ['争い', '遣る', '略奪', '爆破', '短波', '制']
+    print(OJAD(words).get_accents())
