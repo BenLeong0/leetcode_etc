@@ -6,18 +6,7 @@ from suzuki_scraper.suzuki import Suzuki
 from wadoku_scraper.wadoku import Wadoku
 
 
-words = [
-    '眼鏡',
-    '食べ物',
-    '行く',
-    '罵る',
-    '綺麗',
-    '面白い',
-    '気',
-    '木',
-    '尻尾',
-    'する'
-]
+
 
 
 def get_full_accent_dict(words):
@@ -49,4 +38,17 @@ def get_full_accent_dict(words):
     print(accent_dict)
 
 
-get_full_accent_dict(words)
+if __name__ == 'main':
+    words = [
+        '眼鏡',
+        '食べ物',
+        '行く',
+        '罵る',
+        '綺麗',
+        '面白い',
+        '気',
+        '木',
+        '尻尾',
+        'する'
+    ]
+    get_full_accent_dict(words)
