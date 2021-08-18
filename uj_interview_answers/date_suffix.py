@@ -1,4 +1,7 @@
 def get_date_suffix(day):
+    if day > 31:
+        raise ValueError
+
     if (
         day % 10 not in (1, 2, 3) or
         day in (11, 12, 13)
@@ -10,8 +13,6 @@ def get_date_suffix(day):
         return "nd"
     elif day % 10 == 3:
         return "rd"
-    else:
-        raise ValueError("not base 10!!")
 
 
 def test_get_date_suffix():
