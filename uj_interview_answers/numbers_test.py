@@ -43,3 +43,12 @@ def max_row(filename):
     return largest_row
 
 print(max_row(FILENAME))
+
+
+def max_row_comprehension(filename):
+    with open(filename) as file:
+        reader = csv.reader(file)
+        get_row_sum = lambda line: sum(map(int, line))
+        return max(reader, key=get_row_sum)
+
+print(max_row_comprehension(FILENAME))
