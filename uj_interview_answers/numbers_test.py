@@ -7,6 +7,8 @@ MAX_NUM = 999975
 MAX_ROW = ['543563', '857430', '452612', '704294', '580649', '727532', '966768', '-325715', '171569', '580695']
 
 
+# Natural approach
+
 def max_number_open(filename):
     with open(filename, 'r') as file:
         curr_line = file.readline()
@@ -17,14 +19,6 @@ def max_number_open(filename):
     return max_number
 
 assert max_number_open(FILENAME) == MAX_NUM
-
-
-def max_number_csv(filename):
-    with open(filename) as file:
-        reader = csv.reader(file)
-        return max([max(map(int, row)) for row in reader])
-
-assert max_number_csv(FILENAME) == MAX_NUM
 
 
 def max_row(filename):
@@ -46,6 +40,16 @@ def max_row(filename):
     return largest_row
 
 assert max_row(FILENAME) == MAX_ROW
+
+
+# CULTURA MÁXIMA
+
+def max_number_csv(filename):
+    with open(filename) as file:
+        reader = csv.reader(file)
+        return max([max(map(int, row)) for row in reader])
+
+assert max_number_csv(FILENAME) == MAX_NUM
 
 
 def max_row_comprehension(filename):
