@@ -3,6 +3,8 @@ import math
 
 
 FILENAME ='data_numbers.csv'
+MAX_NUM = 999975
+MAX_ROW = ['543563', '857430', '452612', '704294', '580649', '727532', '966768', '-325715', '171569', '580695']
 
 
 def max_number_open(filename):
@@ -14,15 +16,15 @@ def max_number_open(filename):
             curr_line = file.readline()
     return max_number
 
-print(max_number_open(FILENAME))
+assert max_number_open(FILENAME) == MAX_NUM
 
 
 def max_number_csv(filename):
-    f = open(filename)
-    reader = csv.reader(f)
-    return max([max(row) for row in reader])
+    with open(filename) as file:
+        reader = csv.reader(file)
+        return max([max(map(int, row)) for row in reader])
 
-print(max_number_csv(FILENAME))
+assert max_number_csv(FILENAME) == MAX_NUM
 
 
 def max_row(filename):
@@ -42,13 +44,12 @@ def max_row(filename):
 
     return largest_row
 
-print(max_row(FILENAME))
+max_row(FILENAME) == MAX_ROW
 
 
 def max_row_comprehension(filename):
     with open(filename) as file:
         reader = csv.reader(file)
-        get_row_sum = lambda line: sum(map(int, line))
-        return max(reader, key=get_row_sum)
+        return max(reader, key=lambda line: sum(map(int, line)))
 
-print(max_row_comprehension(FILENAME))
+max_row_comprehension(FILENAME) == MAX_ROW
