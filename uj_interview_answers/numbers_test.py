@@ -36,10 +36,11 @@ def max_row(filename):
     for line in reader:
         # Can use either method below to parse line
         parsed_line = [int(x) for x in line]
-        parsed_line = list(map(int, line))
+        parsed_line = map(int, line)
+        line_sum = sum(parsed_line)
 
-        if sum(parsed_line) > largest_sum:
-            largest_sum = sum(parsed_line)
+        if line_sum > largest_sum:
+            largest_sum = line_sum
             largest_row = line
 
     return largest_row
