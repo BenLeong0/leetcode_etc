@@ -9,7 +9,7 @@ MAX_ROW = ['543563', '857430', '452612', '704294', '580649', '727532', '966768',
 
 # Natural approach
 
-def max_number_open(filename):
+def max_number(filename):
     with open(filename, 'r') as file:
         curr_line = file.readline()
         max_number = 0
@@ -18,7 +18,7 @@ def max_number_open(filename):
             curr_line = file.readline()
     return max_number
 
-assert max_number_open(FILENAME) == MAX_NUM
+assert max_number(FILENAME) == MAX_NUM
 
 
 def max_row(filename):
