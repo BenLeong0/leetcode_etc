@@ -2,7 +2,7 @@ import csv
 import math
 
 
-FILENAME ='data_numbers.csv'
+FILENAME = 'data_numbers.csv'
 MAX_NUM = 999975
 MAX_ROW = ['543563', '857430', '452612', '704294', '580649', '727532', '966768', '-325715', '171569', '580695']
 
