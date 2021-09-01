@@ -28,7 +28,7 @@ def get_proper_divisors(n: int) -> Set[int]:
         return []
 
     proper_divisors = {1}
-    for i in range(2, floor(sqrt(n))+1):    # Can't use ceil(sqrt(n))!
+    for i in range(2, floor(sqrt(n))+1):    # Can't use ceil(sqrt(n))! Would ignore sqrts
         if n % i == 0:
             proper_divisors.add(i)
             proper_divisors.add(n // i)
