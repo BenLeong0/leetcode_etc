@@ -48,6 +48,7 @@ def max_number_csv(filename):
     with open(filename) as file:
         reader = csv.reader(file)
         return max([max(map(int, row)) for row in reader])
+    # return max([max(map(int, row)) for row in csv.reader(open(filename))]
 
 assert max_number_csv(FILENAME) == MAX_NUM
 
@@ -56,5 +57,6 @@ def max_row_comprehension(filename):
     with open(filename) as file:
         reader = csv.reader(file)
         return max(reader, key=lambda line: sum(map(int, line)))
+    # return max(csv.reader(open(filename)), key=lambda line: sum(map(int, line)))
 
 assert max_row_comprehension(FILENAME) == MAX_ROW
