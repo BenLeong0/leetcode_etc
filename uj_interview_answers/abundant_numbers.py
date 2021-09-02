@@ -67,4 +67,4 @@ def get_sum_of_non_abundant_sums():
     return sum(get_non_abundant_sums())
 
 
-print('Sum of all non-abundant sums:', get_sum_of_non_abundant_sums())
+print('Sum of all non-abundant sums:', get_sum_of_non_abundant_sums())  # 4179871
