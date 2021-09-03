@@ -17,17 +17,13 @@ const fibSum = (n) => {
 }
 
 const fibSumIterative = (n) => {
-  var prev = 0;
-  var curr = 1;
+  queue = [ 0, 1 ];
   var sum = 0;
-  var next;
-  while (curr < n) {
-    if (curr % 2 === 0) {sum += curr}
-    next = curr + prev;
-    prev = curr
-    curr = next
+  while (queue[1] < n) {
+    sum += queue[1] % 2 === 0 ? queue[1] : 0;
+    queue.push(queue[1] + queue.shift());
   }
-  return sum
+  return sum;
 }
 
 console.log(fibSum(FIB_LIMIT))            // 4613732
