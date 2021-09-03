@@ -5,8 +5,8 @@ const TEST_STRING = 'they mostly come at night. Mostly.';
 
 const threeFiveMultiplesSum = (n) => [...Array(n).keys()].reduce((a,b)=>(b%3&&b%5)?a:a+b);
 
-console.log(threeFiveMultiplesSum(10))
-console.log(threeFiveMultiplesSum(1000))
+console.log(threeFiveMultiplesSum(10))    // 23
+console.log(threeFiveMultiplesSum(1000))  // 233168
 
 ///////////////
 
@@ -30,8 +30,8 @@ const fibSumIterative = (n) => {
   return sum
 }
 
-console.log(fibSum(FIB_LIMIT))
-console.log(fibSumIterative(FIB_LIMIT))
+console.log(fibSum(FIB_LIMIT))            // 4613732
+console.log(fibSumIterative(FIB_LIMIT))   // 4613732
 
 ///////////////
 
@@ -39,5 +39,5 @@ const sortedNoDupes = (s) => [...new Set(s)].sort().join('');
 
 const reverseSentence = (s) => s.split(' ').reverse();
 
-console.log(sortedNoDupes(TEST_STRING))
-console.log(reverseSentence(TEST_STRING))
+console.log(sortedNoDupes(TEST_STRING))   // " .Maceghilmnosty"
+console.log(reverseSentence(TEST_STRING)) // [ 'Mostly.', 'night.', 'at', 'come', 'mostly', 'they' ]
