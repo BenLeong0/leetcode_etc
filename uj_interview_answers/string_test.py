@@ -13,16 +13,11 @@ test_sort_word_excl_dupes()
 
 
 def reverse_sentence(s):
-    while '  ' in s:
-        s = s.replace('  ', ' ')
-    if not s:
-        return []
-    return s.split(' ')[::-1]
+    return s.split(' ')[::-1] if s else []
 
 
 def test_reverse_sentence():
     assert reverse_sentence(TEST_STRING) == ['Mostly.', 'night.', 'at', 'come', 'mostly', 'they']
     assert reverse_sentence('') == []
-    assert reverse_sentence('they     mostly  come at night.    Mostly.') == ['Mostly.', 'night.', 'at', 'come', 'mostly', 'they']
 
 test_reverse_sentence()
