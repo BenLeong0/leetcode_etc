@@ -12,6 +12,8 @@ MAX_ROW = ['543563', '857430', '452612', '704294', '580649', '727532', '966768',
 def max_number(filename):
     with open(filename, 'r') as file:
         curr_line = file.readline()
+        if not curr_line:
+            raise ValueError(f"Empty file {filename}")
         max_number = -math.inf
         while curr_line:
             max_number = max(max_number, max([int(x) for x in curr_line.split(',')]))
