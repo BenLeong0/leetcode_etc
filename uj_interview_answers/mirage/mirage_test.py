@@ -24,10 +24,12 @@ THESE FUNCTIONS ARE PROVIDED TO MAKE HTTP REQUESTS
 """
 
 import requests, json
-from typing import Dict
+from typing import Dict, Optional
 from uuid import uuid1
 
 import urllib
+
+from requests.models import HTTPError
 
 
 def make_get_request(url):
@@ -37,7 +39,7 @@ def make_get_request(url):
 
 
 def make_post_request(url, data, content_type="application/json"):
-    print('making post request to {} with data {}'.format(url, data))
+    # print('making post request to {} with data {}'.format(url, data))
     response = requests.post(
         url,
     	data=data,
@@ -45,6 +47,8 @@ def make_post_request(url, data, content_type="application/json"):
             "content-type": 'application/x-www-form-urlencoded',
         }
     )
+    if response.status_code != 200:
+        raise HTTPError(response=response)
     return response.text
 
     # try:
@@ -76,24 +80,32 @@ SECRET_GENERATE_RESET_TOKEN = "Salt-n-Pepa and Heavy D up in the limousine"
 
 # FIRSTLY, LET'S SEE IF WE CAN LOG IN USING MY EMAIL AND SUPER-SECURE PASSWORD
 
-def login(email: str, password: str) -> None:
-    print("logging in")
+def login(email: str, password: str) -> Optional[str]:
+    print(">>> Logging in to account with email", email)
+
     encoded_email = urllib.parse.quote(email, safe='')
     encoded_password = urllib.parse.quote(password, safe='')
 
     data = f"email={encoded_email}&password={encoded_password}"
 
-    token = make_post_request(
-        URL_GET_TOKEN,
-        data
-    )
+    try:
+        token = make_post_request(
+            URL_GET_TOKEN,
+            data
+        )
+        print("Logged in to user_id", token)
+        return token
+    except HTTPError as e:
+        print("Login failed")
+        return None
 
-    return token
 
 
 def test_login():
     assert login('adam@myurbanjungle.com', 'testing123') is not None
     assert login('adam@myurbanjungle.com', 'testing1234') is None
+
+test_login()
 
 """
 CAN YOU FOLLOW THROUGH THE FUNCTION CALLED IN MIRAGE WHEN THIS HTTP CALL IS
@@ -117,6 +129,8 @@ UNCOMMENT THIS TEST TO CHECK YOU HAVE THE RIGHT ANSWER
 """
 
 def get_user_id(email: str) -> str:
+    print(">>> Getting user_id for user with email", email)
+
     encoded_email = urllib.parse.quote(email, safe='')
     encoded_secret = urllib.parse.quote(SECRET_CREATE_USER, safe='')
 
@@ -124,6 +138,7 @@ def get_user_id(email: str) -> str:
     user_data = json.loads(make_post_request(URL_GET_USER, data))
 
     user_id = user_data['user_id']
+    print("user_id:", user_id)
     return user_id
 
 
@@ -144,18 +159,21 @@ CREATE A USER FOR YOURSELF AND WRITE A TEST TO CHECK YOUR USER ID
 """
 
 def create_user(email: str, password: str) -> Dict[str, str]:
-    encoded_email = urllib.parse.quote(email, safe='')
-    encoded_password = urllib.parse.quote(password, safe='')
-    encoded_secret = urllib.parse.quote(SECRET_CREATE_USER, safe='')
+    print(">>> Creating user with email", email)
 
-    data = f"email={encoded_email}&password={encoded_password}&secret={encoded_secret}&roles=user"
+    data = "email={email}&password={password}&secret={secret}&roles=user".format(
+        email=urllib.parse.quote(email, safe=''),
+        password=urllib.parse.quote(password, safe=''),
+        secret=urllib.parse.quote(SECRET_CREATE_USER, safe=''),
+    )
     resp = json.loads(make_post_request(URL_CREATE_USER, data))
 
+    print("User created with user_id:", resp['user_id'])
     return resp
 
 
 def test_create_user():
-    email = f"{uuid1()}@gmail.com"
+    email = f"ben-{str(uuid1())[:8]}@test.com"
     password = "&@testing=%"
 
     user_data = create_user(email, password)
@@ -173,32 +191,43 @@ test_create_user()
 CHANGE YOUR PASSWORD AND WRITE A TEST TO SHOW THAT IT HAS CHANGED
 """
 
-# def change_password(email: str, old_password: str, new_password: str) -> None:
-def change_password(email: str, new_password: str) -> None:
+def change_password(email: str, new_password: str) -> Optional[Dict[str, str]]:
+    print(">>> Changing password for user with email", email)
+
     encoded_email = urllib.parse.quote(email, safe='')
-    # encoded_old_password = urllib.parse.quote(old_password, safe='')
-    encoded_new_password = urllib.parse.quote(new_password, safe='')
     encoded_secret = urllib.parse.quote(SECRET_GENERATE_RESET_TOKEN, safe='')
 
-    get_token_data = f"email={encoded_email}&secret={encoded_secret}"
-    resp = json.loads(make_post_request(
-        URL_GENERATE_RESET_TOKEN,
-        get_token_data
-    ))
+    get_token_data = "email={}&secret={}".format(
+        encoded_email,
+        encoded_secret,
+    )
+    try:
+        resp = json.loads(make_post_request(
+            URL_GENERATE_RESET_TOKEN,
+            get_token_data
+        ))
+        print("Reset token fetched")
+    except HTTPError:
+        print("Failed to fetch reset token")
+        return None
 
-    print("YO")
-
+    encoded_new_password = urllib.parse.quote(new_password, safe='')
     encoded_reset_token = urllib.parse.quote(resp['tok'], safe='')
+
     change_pwd_data = "email={}&new_password={}&reset_token={}".format(
         encoded_email,
         encoded_new_password,
-        encoded_reset_token
+        encoded_reset_token,
     )
-    resp = make_post_request(
-        URL_RESET_PASSWORD,
-        change_pwd_data
-    )
-    return resp
+    try:
+        resp = make_post_request(
+            URL_RESET_PASSWORD,
+            change_pwd_data
+        )
+        print("Password reset")
+        return resp
+    except HTTPError:
+        print("Password reset failed")
 
 
 def test_change_password():
@@ -230,7 +259,7 @@ def test_whole_flow():
     assert 'tok' in login(email, new_password)
     assert login(email, password) == ''
 
-test_whole_flow()
+# test_whole_flow()
 
 
 
