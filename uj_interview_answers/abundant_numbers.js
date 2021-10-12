@@ -26,6 +26,7 @@ console.log(isAbundant(12));            // Should be true
 
 const abundantNumbers = [...Array(28123).keys()].slice(1).filter(n=>isAbundant(n));
 console.log(abundantNumbers)
+console.log(abundantNumbers.length)
 
 
 const getAbundantSums = () => {
