@@ -43,3 +43,17 @@ def test_full_fruit_bowl(fruitbowl):
 def test_full_fruit_bowl(fruitbowl, fruit1, fruit2):
     assert fruit1 in fruitbowl
     assert fruit2 in fruitbowl
+
+a = {
+    "id": "hi",
+    "ape": True,
+}
+
+b = {
+    "id": "yo",
+    "ape": False,
+}
+
+@pytest.mark.parametrize("d", [a,b], ids=lambda d:d['id'])
+def test_param_dict_id(d):
+    assert True
