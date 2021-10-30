@@ -54,6 +54,11 @@ b = {
     "ape": False,
 }
 
-@pytest.mark.parametrize("d", [a,b], ids=lambda d:d['id'])
+
+@pytest.fixture(params=[a,b], ids=lambda d:d['id'])
+def d(request):
+    return request.param
+
+# @pytest.mark.parametrize("d", [a,b], )
 def test_param_dict_id(d):
     assert True
