@@ -4,10 +4,11 @@ const TEST_STRING = 'they mostly come at night. Mostly.';
 ///////////////
 
 const threeFiveMultiplesSum = (n) => [...Array(n).keys()].reduce((a,b)=>(b%3&&b%5)?a:a+b);
-const multiplesSum = (n, factors) => [...Array(n).keys()].reduce((a,b)=>(b%3&&b%5)?a:a+b);
+const multiplesSum = (n, factors) => [...Array(n).keys()].reduce((a,b)=>factors.every(x => b%x)?a:a+b);
 
 console.log(threeFiveMultiplesSum(10))    // 23
 console.log(threeFiveMultiplesSum(1000))  // 233168
+console.log(multiplesSum(1000, [3, 5]))   // 233168
 
 ///////////////
 
