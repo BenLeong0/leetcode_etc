@@ -52,7 +52,7 @@ def max_number_csv(filename):
     with open(filename) as file:
         reader = csv.reader(file)
         return max([max(map(int, row)) for row in reader])
-    # return max([max(map(int, row)) for row in csv.reader(open(filename))]
+    # return max([max(map(int, row)) for row in csv.reader(open(filename))])
 
 assert max_number_csv(FILENAME) == MAX_NUM
 print("max_number_csv successful!")
