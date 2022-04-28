@@ -1,3 +1,11 @@
+"""
+With the file 'data_numbers.csv':
+
+1) Return the largest number in a csv given the filename
+
+2) Return the row with the largest sum in a csv given the filename.
+"""
+
 import csv
 import math
 
