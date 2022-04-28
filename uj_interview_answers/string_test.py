@@ -1,3 +1,15 @@
+"""
+With this string:
+'they mostly come at night. Mostly.'
+
+1) Write a function that returns a sorted string with no duplicate characters
+(keep any whitespace and punctuation):
+Example: ' .Maceghilmnosty'
+
+2) Write a function that returns the words in reverse order:
+Example: ['Mostly.', 'night.', 'at', 'come', 'mostly', 'they']
+"""
+
 TEST_STRING = 'they mostly come at night. Mostly.'
 
 
