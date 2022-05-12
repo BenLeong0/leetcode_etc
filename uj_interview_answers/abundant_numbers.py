@@ -68,3 +68,25 @@ def get_sum_of_non_abundant_sums():
 
 
 print('Sum of all non-abundant sums:', get_sum_of_non_abundant_sums())  # 4179871
+
+
+# Using 2-sum
+
+def get_abundant_numbers_set() -> List[int]:
+    # Generate list of all abundant numbers (can reduce limit further?)
+    return {n for n in range(1, 28123) if is_abundant(n)}
+
+
+def get_full_sum_two_sum() -> int:
+    full_sum = 0
+    abundant_numbers = get_abundant_numbers_set()
+    for n in range(1, 28124):
+        for ab_num in abundant_numbers:
+            if n - ab_num in abundant_numbers:
+                break
+        else:
+            full_sum += n
+    return full_sum
+
+
+print(get_full_sum_two_sum())
