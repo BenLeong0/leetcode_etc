@@ -6,7 +6,7 @@ def getMaxValue(arr):
     for i in range(1, len(sorted_arr)):
         if sorted_arr[i] > sorted_arr[i-1]:
             sorted_arr[i] = sorted_arr[i-1] + 1
-    
+
     return sorted_arr[-1]
 
 
