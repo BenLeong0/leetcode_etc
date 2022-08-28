@@ -3,13 +3,11 @@ def printAllSubsets(s):
     for letter in s:
         newSubsets = set()
         for subset in subsets:
-            newSubsets.add(subset+letter)
-        subsets = subsets.union(newSubsets)
+            newSubsets.add(subset + letter)
+        subsets.update(newSubsets)
 
-    subsets = list(subsets)
-    subsets.sort()
-    subsets.sort(key=lambda x: len(x))
-    for subset in subsets:
+    sorted_subsets = sorted(subsets, key=lambda x: len(x))
+    for subset in sorted_subsets:
         print(subset)
 
 # printAllSubsets('abc')

@@ -30,7 +30,7 @@ def bstSuccessor(node):
             if node.right:
                 desc=node.right
                 while desc.left:
-                    desc = des.left
+                    desc = desc.left
             if node.parent:
                 ansc = node.parent
                 while ansc.parent:

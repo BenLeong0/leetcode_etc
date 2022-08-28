@@ -1,18 +1,17 @@
-from math import inf
 s = "aaabbbacd"
 
-def candyCrushRecursion(s=s):
+def candyCrushRecursion(s):
     print(s)
     i = 0
     while i < len(s)-2:
         if s[i] == s[i+1] == s[i+2]:
-            return s[:i] + candyCrush(s[i+3:])
+            return s[:i] + candyCrushRecursion(s[i+3:])
         else:
             i += 1
     return s
 
 
-def candyCrushStack(s=s):
+def candyCrushStack(s):
     if not s:
         return ''
 
@@ -40,7 +39,7 @@ def candyCrushStack(s=s):
     return result
 
 
-def candyCrushOptimal(s=s):
+def candyCrushOptimal(s):
     if not s:
         return ''
     chains = [[s[0],1]]
@@ -75,5 +74,5 @@ def candyCrushOptimal(s=s):
 
 
 
-print(candyCrushStack())
-print(candyCrushOptimal())
+print(candyCrushStack(s))
+print(candyCrushOptimal(s))

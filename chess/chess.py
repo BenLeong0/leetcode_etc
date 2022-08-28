@@ -1,12 +1,13 @@
 import moves
 
 empty_board = [[" " for _ in range(8)] for _ in range(8)]
-
-start_board = (
-    [["r", "n", "b", "q", "k", "b", "n", "r"], ["p" for _ in range(8)]]
-    + [[" " for _ in range(8)] for _ in range(4)]
-    + [[" " for _ in range(8)], ["R", "N", "B", "Q", "K", "B", "N", "R"]]
-)
+start_board = sum([
+    ["r", "n", "b", "q", "k", "b", "n", "r"],
+    ["p" for _ in range(8)],
+    [[" " for _ in range(8)] for _ in range(4)],
+    ["P" for _ in range(8)],
+    ["R", "N", "B", "Q", "K", "B", "N", "R"],
+], [])
 
 white_pieces = ["P", "R", "N", "B", "K", "Q"]
 black_pieces = ["p", "r", "n", "b", "k", "q"]
