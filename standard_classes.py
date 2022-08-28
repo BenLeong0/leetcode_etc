@@ -1,5 +1,8 @@
+from typing import List, Optional
+
+
 class ListNode:
-    def __init__(self, val=0, next=None):
+    def __init__(self, val: int=0, next: Optional['ListNode']=None):
         self.val = val
         self.next = next
 
@@ -13,7 +16,12 @@ class ListNode:
 
 
 class DoublyLinkedNode:
-    def __init__(self, val=0, next=None, prev=None):
+    def __init__(
+        self,
+        val: int = 0,
+        next: Optional['DoublyLinkedNode'] = None,
+        prev: Optional['DoublyLinkedNode'] = None,
+    ):
         self.val = val
         self.next = next
         self.prev = prev
@@ -27,7 +35,7 @@ class DoublyLinkedNode:
         return str(arr)
 
 
-def initialiseLinkedList(values):
+def initialiseLinkedList(values: List[int]):
     dummyHead = ListNode()
     curr = dummyHead
     for val in values:
